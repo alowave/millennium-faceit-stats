@@ -9,8 +9,8 @@ The Millennium plugin integrates a simple FaceIt widget into profile pages viewe
 1. **Download the latest release** from the repository.  
 2. Copy the `faceit-stats` folder into your Steam plugins directory.  
    - Default path: `C:\Program Files (x86)\Steam\plugins`  
-3. Copy the `faceit_stats.css` file from the release into your Steam UI directory.  
-   - Default path: `C:\Program Files (x86)\Steam\steamui`
+3. Copy the `steamui` folder from the release into your Steam root directory.  
+   - Default path: `C:\Program Files (x86)\Steam\`
 
 ## Building  
 #### For Unix-like
