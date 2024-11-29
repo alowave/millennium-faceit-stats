@@ -1,4 +1,4 @@
-# FaceIt Stats for Millennium  
+# FaceIt Stats for [Millennium](https://github.com/shdwmtr/millennium)  
 The Millennium plugin integrates a simple FaceIt widget into profile pages viewed in the Steam web browser. **Also works in overlay!**
 
 > [!CAUTION]  
