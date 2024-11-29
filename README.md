@@ -3,7 +3,8 @@ The Millennium plugin integrates a simple FaceIt widget into profile pages viewe
 
 > [!CAUTION]  
 > This plugin utilizes the WebKit feature to inject JavaScript code directly into your Steam web browser. **It is strongly recommended that you review the code yourself before installing this plugin.** Future updates to Millennium will improve the plugin installation and moderation process. Avoid using untrusted builds from GitHub, however, prebuilt releases are provided for easier installation.
-![image]()
+
+![image](https://github.com/alowave/millennium-faceit-stats/blob/main/example.png?raw=true)
 ## Installation  
 1. **Download the latest release** from the repository.  
 2. Copy the `faceit-stats` folder into your Steam plugins directory.  
