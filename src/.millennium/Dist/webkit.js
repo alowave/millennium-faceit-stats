@@ -1,78 +1,70 @@
-/**
- * You have a limited version of the Millennium API available to you in the webkit context.
- */
-type Millennium = {
+const pluginName = "alowave.faceit_stats";
+function InitializePlugins() {
     /**
-     * Call a function in the backend (python) of your plugin
-     * @param methodName a public static method declared and defined in your plugin backend (python)
-     * @param kwargs an object of key value pairs that will be passed to the backend method. accepted types are: string, number, boolean
-     * @returns string | number | boolean
+     * This function is called n times depending on n plugin count,
+     * Create the plugin list if it wasn't already created
      */
-    callServerMethod: (methodName: string, kwargs?: any) => Promise<any>,
-    /**
-     * Async wait for an element in the document using DOM observers and querySelector
-     * @param privateDocument document object of the webkit context
-     * @param querySelector the querySelector string to find the element (as if you were using document.querySelector)
-     * @param timeOut If the element is not found within the timeOut, the promise will reject
-     * @returns 
-     */
-    findElement: (privateDocument: Document,  querySelector: string, timeOut?: number) => Promise<NodeListOf<Element>>,
-};
+    !window.PLUGIN_LIST && (window.PLUGIN_LIST = {});
+    // initialize a container for the plugin
+    if (!window.PLUGIN_LIST[pluginName]) {
+        window.PLUGIN_LIST[pluginName] = {};
+    }
+}
+InitializePlugins()
+async function wrappedCallServerMethod(methodName, kwargs) {
+    return new Promise((resolve, reject) => {
+        // @ts-ignore
+        Millennium.callServerMethod(pluginName, methodName, kwargs).then((result) => {
+            resolve(result);
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+}
+var millennium_main = (function (exports) {
+    'use strict';
 
-declare const Millennium: Millennium;
-
-export default async function WebkitMain() {
-    
-    console.log("FaceIt Stats loaded.")
-    const rightCol = await Millennium.findElement(document, '.profile_rightcol');
-
-    if (rightCol.length > 0) {
-        console.log("Detected rightcol.");
-        try {
-            const parser = new DOMParser();
-
-            // Fetch the XML data from the current document URL with ?xml=1 appended
-            const profileUrl = `${window.location.href}/?xml=1`;
-            const profileResponse = await fetch(profileUrl);
-            const profileXmlText = await profileResponse.text();
-            const profileXmlDoc = parser.parseFromString(profileXmlText, "application/xml");
-
-            // Extract the necessary variables from the XML
-            const steamID64 = profileXmlDoc.querySelector("steamID64")?.textContent || "0";
-
-            const memberSince = profileXmlDoc.querySelector("memberSince")?.textContent || "N/A";
-            const vacBanned = parseInt(profileXmlDoc.querySelector("vacBanned")?.textContent || "0", 10);
-            const tradeBanState = profileXmlDoc.querySelector("tradeBanState")?.textContent || "Not played.";
-            const isLimitedAccount = parseInt(profileXmlDoc.querySelector("isLimitedAccount")?.textContent || "0", 10);
-            
-            const gameStatUrl = `${window.location.href}/games?tab=all&xml=1`;
-            const gameResponse = await fetch(gameStatUrl);
-            const gameXmlText = await gameResponse.text();
-            const gameXmlDoc = parser.parseFromString(gameXmlText, "application/xml");
-
-            const cs2 = Array.from(gameXmlDoc.querySelectorAll("game")).find(g => g.querySelector("appID")?.textContent === "730");
-            const csHours = cs2 ? cs2.querySelector("hoursOnRecord")?.textContent || "Private" : "Private";
-            const csRecentHours = cs2 ? cs2.querySelector("hoursLast2Weeks")?.textContent || "0" : "Private";
-            
-            // Fetch stats from the /stats/CSGO?xml=1 URL
-            const statsUrl = `${window.location.href}/stats/CSGO?xml=1`;
-            const statsResponse = await fetch(statsUrl);
-            const statsText = await statsResponse.text();
-            const statsXml = parser.parseFromString(statsText, "application/xml");
-
-            // Extract the unlock timestamp and format it
-            const unlockTimestamp = statsXml.querySelector("achievement > unlockTimestamp")?.textContent ?? null;
-            const playsSince = unlockTimestamp
-                ? new Date(parseInt(unlockTimestamp, 10) * 1000).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })
-                : "None";
-
-            //const bannedFriends = gameXmlDoc.querySelector("bannedFriends")?.textContent || "0/0 (0%)";
-            // Create a new div to hold the stats HTML
-            const faceItUser = await Millennium.callServerMethod("get_user_by_steamId", {steamId: steamID64})
-            const faceItUserJSON = JSON.parse(faceItUser);
-
-            const statsHTML = document.createElement("div");
-            statsHTML.innerHTML = `
+    async function WebkitMain() {
+        console.log("FaceIt Stats loaded.");
+        const rightCol = await Millennium.findElement(document, '.profile_rightcol');
+        if (rightCol.length > 0) {
+            console.log("Detected rightcol.");
+            try {
+                const parser = new DOMParser();
+                // Fetch the XML data from the current document URL with ?xml=1 appended
+                const profileUrl = `${window.location.href}/?xml=1`;
+                const profileResponse = await fetch(profileUrl);
+                const profileXmlText = await profileResponse.text();
+                const profileXmlDoc = parser.parseFromString(profileXmlText, "application/xml");
+                // Extract the necessary variables from the XML
+                const steamID64 = profileXmlDoc.querySelector("steamID64")?.textContent || "0";
+                const memberSince = profileXmlDoc.querySelector("memberSince")?.textContent || "N/A";
+                const vacBanned = parseInt(profileXmlDoc.querySelector("vacBanned")?.textContent || "0", 10);
+                const tradeBanState = profileXmlDoc.querySelector("tradeBanState")?.textContent || "Not played.";
+                const isLimitedAccount = parseInt(profileXmlDoc.querySelector("isLimitedAccount")?.textContent || "0", 10);
+                const gameStatUrl = `${window.location.href}/games?tab=all&xml=1`;
+                const gameResponse = await fetch(gameStatUrl);
+                const gameXmlText = await gameResponse.text();
+                const gameXmlDoc = parser.parseFromString(gameXmlText, "application/xml");
+                const cs2 = Array.from(gameXmlDoc.querySelectorAll("game")).find(g => g.querySelector("appID")?.textContent === "730");
+                const csHours = cs2 ? cs2.querySelector("hoursOnRecord")?.textContent || "Private" : "Private";
+                const csRecentHours = cs2 ? cs2.querySelector("hoursLast2Weeks")?.textContent || "0" : "Private";
+                // Fetch stats from the /stats/CSGO?xml=1 URL
+                const statsUrl = `${window.location.href}/stats/CSGO?xml=1`;
+                const statsResponse = await fetch(statsUrl);
+                const statsText = await statsResponse.text();
+                const statsXml = parser.parseFromString(statsText, "application/xml");
+                // Extract the unlock timestamp and format it
+                const unlockTimestamp = statsXml.querySelector("achievement > unlockTimestamp")?.textContent ?? null;
+                const playsSince = unlockTimestamp
+                    ? new Date(parseInt(unlockTimestamp, 10) * 1000).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })
+                    : "None";
+                //const bannedFriends = gameXmlDoc.querySelector("bannedFriends")?.textContent || "0/0 (0%)";
+                // Create a new div to hold the stats HTML
+                const faceItUser = await wrappedCallServerMethod("get_user_by_steamId", { steamId: steamID64 });
+                const faceItUserJSON = JSON.parse(faceItUser);
+                const statsHTML = document.createElement("div");
+                statsHTML.innerHTML = `
             <div class="account-row">
                 <div id="steaminfo_76561198328925991" class="account-steaminfo-container">
                     <div class="account-steaminfo-row">
@@ -107,9 +99,8 @@ export default async function WebkitMain() {
                 </div>
                 <div class="account-faceitinfo-container">
                     <div class="account-faceit-cover" style="background-image: url(${faceItUserJSON?.cover_image_url ?? ''})"></div>
-                    ${
-                        faceItUserJSON
-                            ? `
+                    ${faceItUserJSON
+                ? `
                             <a target="_blank" class="nolink" href="https://www.faceit.com/en/players/${faceItUserJSON?.nickname ?? ''}" rel="noopener">
                                 <img src="https://steamloopback.host/FaceItFinder/faceit_arrow.png" class="account-faceitinfo-container-arrow" alt="FaceIt profile arrow">
                             </a>
@@ -140,33 +131,49 @@ export default async function WebkitMain() {
                                 <a class="nolink" href="https://faceittracker.net/players/${faceItUserJSON?.nickname ?? ''}">Show detailed Faceit stats</a>
                             </div>
                             `
-                            : `<div class="account-faceit-message"><strong>No FaceIt account found.</strong></div>`
-                    }
+                : `<div class="account-faceit-message"><strong>No FaceIt account found.</strong></div>`}
                 </div>
             </div>
             `;
-            rightCol[0].insertBefore(statsHTML, rightCol[0].children[1]);
-            const statsPager = statsHTML.querySelector('.stats_pager');
-            if (statsPager) {
-                statsPager.addEventListener('click', () => {
-                    const page1 = statsPager.querySelector('.page1');
-                    const page2 = statsPager.querySelector('.page2');
-
-                    // Toggle the hidden class between page1 and page2
-                    if (page1.classList.contains('hidden')) {
-                        page1.classList.remove('hidden');
-                        page2.classList.add('hidden');
-                    } else {
-                        page1.classList.add('hidden');
-                        page2.classList.remove('hidden');
-                    }
-                });
+                rightCol[0].insertBefore(statsHTML, rightCol[0].children[1]);
+                const statsPager = statsHTML.querySelector('.stats_pager');
+                if (statsPager) {
+                    statsPager.addEventListener('click', () => {
+                        const page1 = statsPager.querySelector('.page1');
+                        const page2 = statsPager.querySelector('.page2');
+                        // Toggle the hidden class between page1 and page2
+                        if (page1.classList.contains('hidden')) {
+                            page1.classList.remove('hidden');
+                            page2.classList.add('hidden');
+                        }
+                        else {
+                            page1.classList.add('hidden');
+                            page2.classList.remove('hidden');
+                        }
+                    });
+                }
+            }
+            catch (e) {
+                console.log(e);
             }
         }
-        catch (e) {
-            console.log(e);
+        else {
+            console.error("Parent container \".profile_rightcol\" not found");
         }
-    } else {
-        console.error("Parent container \".profile_rightcol\" not found");
     }
+
+    exports.default = WebkitMain;
+
+    Object.defineProperty(exports, '__esModule', { value: true });
+
+    return exports;
+
+})({});
+
+function ExecuteWebkitModule() {
+    // Assign the plugin on plugin list. 
+    Object.assign(window.PLUGIN_LIST[pluginName], millennium_main);
+    // Run the rolled up plugins default exported function 
+    millennium_main["default"]();
 }
+ExecuteWebkitModule()

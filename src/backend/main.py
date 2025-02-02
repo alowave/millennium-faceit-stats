@@ -1,6 +1,8 @@
 import Millennium, PluginUtils  # type: ignore
 import requests
 import json
+import shutil
+import os
 
 # API Headers for FaceIt requests (Public Key)
 HEADERS = {
@@ -10,6 +12,8 @@ HEADERS = {
 
 # Logger setup
 LOGGER = PluginUtils.Logger("__faceit_stats__")
+
+DEBUG = False
 
 class FaceItUser:
     def __init__(self, id: str, nickname: str, country: str, avatar: str, cover_image_url: str, faceit_elo: int, skill_level: int):
@@ -101,17 +105,48 @@ def get_user_by_steamId(steamId):
         return json.dumps(user.__dict__)
     return None
 
+def GetPluginDir():
+    return os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..'))
+
 class Plugin:
+    def copy_frontend_files(self):
+        css_source = os.path.join(GetPluginDir(), 'static', 'faceit_stats.css')
+        static_source = os.path.join(GetPluginDir(), 'static')
+        png_source = [f for f in os.listdir(static_source) if f.endswith('.png')]
+        
+        steamui_dest = os.path.join(Millennium.steam_path(), 'steamui')
+        faceit_finder_dest = os.path.join(steamui_dest, 'FaceItFinder')
+        os.makedirs(faceit_finder_dest, exist_ok=True)
+        
+        try:
+            if os.path.exists(css_source):
+                shutil.copy(css_source, steamui_dest)
+                print(f'Copied {css_source} to {steamui_dest}')
+            else:
+                print(f'File not found: {css_source}')
+            
+            for png_file in png_source:
+                png_file_path = os.path.join(static_source, png_file)
+                if os.path.exists(png_file_path):
+                    shutil.copy(png_file_path, faceit_finder_dest)
+                    print(f'Copied {png_file_path} to {faceit_finder_dest}')
+                else:
+                    print(f'File not found: {png_file_path}')
+                    
+        except Exception as e:
+            print(f'Error: {e}')
+    
     def _front_end_loaded(self):
-        """Logs when the front end has loaded."""
         LOGGER.log("The front end has loaded!")
 
     def _load(self):     
         """Initializes the plugin."""
         LOGGER.log(f"Bootstrapping FaceItStats, Millennium {Millennium.version()}")
+        
+        self.copy_frontend_files()
+        
         Millennium.add_browser_css("faceit_stats.css")
         Millennium.ready()
 
     def _unload(self):
-        """Logs when the plugin is unloading."""
         LOGGER.log("Unloading")
