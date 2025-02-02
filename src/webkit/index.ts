@@ -132,7 +132,7 @@ export default async function WebkitMain() {
                                 </div>
                                 <div class="account-faceit-stats page2 hidden">
                                     <div class="account-faceit-stats-single">H/S: <strong>${faceItUserJSON?.stats?.avg_hs ?? 'N/A'}</strong></div>
-                                    <div class="account-faceit-stats-single">K/R: <strong>${faceItUserJSON?.stats?.avg_kr ?? 'N/A'}</strong></div>
+                                    <div class="account-faceit-stats-single">ADR: <strong>${faceItUserJSON?.stats?.adr ?? 'N/A'}</strong></div>
                                     <div class="account-faceit-stats-single">WIN: <strong>${faceItUserJSON?.stats?.winrate ?? 'N/A'}</strong></div>
                                 </div>
                             </div>
