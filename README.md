@@ -1,15 +1,16 @@
-# FaceIt Stats for Millennium  
+# FaceIt Stats for [Millennium](https://github.com/shdwmtr/millennium)  
 The Millennium plugin integrates a simple FaceIt widget into profile pages viewed in the Steam web browser. **Also works in overlay!**
 
 > [!CAUTION]  
 > This plugin utilizes the WebKit feature to inject JavaScript code directly into your Steam web browser. **It is strongly recommended that you review the code yourself before installing this plugin.** Future updates to Millennium will improve the plugin installation and moderation process. Avoid using untrusted builds from GitHub, however, prebuilt releases are provided for easier installation.
-![image]()
+
+![image](https://github.com/alowave/millennium-faceit-stats/blob/main/example.png?raw=true)
 ## Installation  
 1. **Download the latest release** from the repository.  
 2. Copy the `faceit-stats` folder into your Steam plugins directory.  
    - Default path: `C:\Program Files (x86)\Steam\plugins`  
-3. Copy the `faceit_stats.css` file from the release into your Steam UI directory.  
-   - Default path: `C:\Program Files (x86)\Steam\steamui`
+3. Copy the `steamui` folder from the release into your Steam root directory.  
+   - Default path: `C:\Program Files (x86)\Steam\`
 
 ## Building  
 #### For Unix-like
