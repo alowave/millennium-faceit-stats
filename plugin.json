@@ -2,6 +2,8 @@
     "$schema": "https://raw.githubusercontent.com/SteamClientHomebrew/Millennium/main/src/sys/plugin-schema.json",
 
     "name": "alowave.faceit_stats",
-    "common_name": "FaceIt Stats - Millennium",
-    "description": "Displays player FaceIt statistics on steam profiles."
+    "common_name": "FaceIt Stats",
+    "description": "Displays player FaceIt statistics on steam profiles.",
+
+    "include": ["webkit", "static"]
 }
