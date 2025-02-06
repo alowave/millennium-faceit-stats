@@ -4,10 +4,10 @@
     "build": "millennium-ttc --build prod"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.26.0",
-    "@babel/preset-react": "^7.25.9",
+    "@babel/preset-env": "^7.26.7",
+    "@babel/preset-react": "^7.26.3",
     "@types/react": "16.14.0",
-    "@types/react-dom": "^18.3.0",
+    "@types/react-dom": "^18.3.5",
     "@types/webpack": "^5.28.5"
   },
   "type": "module",
@@ -18,10 +18,10 @@
   "author": "alowave",
   "license": "MIT",
   "dependencies": {
-    "@steambrew/api": "^4.1.1",
-    "@steambrew/client": "^4.1.1",
-    "@steambrew/ttc": "^1.0.4",
-    "@steambrew/webkit": "^4.1.1",
-    "preact": "^10.25.0"
+    "@steambrew/api": "^4.2.2",
+    "@steambrew/client": "^4.2.1",
+    "@steambrew/ttc": "^1.0.5",
+    "@steambrew/webkit": "^4.2.1",
+    "preact": "^10.25.4"
   }
 }
