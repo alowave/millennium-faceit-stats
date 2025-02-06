@@ -12,23 +12,9 @@ The Millennium plugin integrates a simple FaceIt widget into profile pages viewe
 3. Activate a plugin in the steam (millenium) settings.
 
 ## Building  
-#### For Unix-like
 ```bash
-git clone --depth=1 https://github.com/SteamClientHomebrew/Millennium 
-mv ./Millennium/examples/plugin ./plugin_template 
-rm -rf Millennium
-
-cd plugin_template
-pnpm install
-```
-
-#### For Windows
-```powershell
-git clone --depth=1 https://github.com/SteamClientHomebrew/Millennium 
-Copy-Item -Recurse .\Millennium\examples\plugin .\plugin_template
-Remove-Item -Recurse -Force .\Millennium
-
-cd plugin_template
+git clone --depth=1 https://github.com/alowave/millennium-faceit-stats 
+cd millennium-faceit-stats
 pnpm install
 ```
 Run the following command to build the plugin:  
@@ -37,7 +23,7 @@ pnpm run dev
 ```
 
 After building, place the plugin template in your plugins directory:  
-`%MILLENNIUM_PATH%/plugins/plugin_template`. Then, activate it from the "Plugins" tab in Steam, or use the command:  
+`%MILLENNIUM_PATH%/plugins/millennium-faceit-stats`. Then, activate it from the "Plugins" tab in Steam, or use the command:  
 ```bash
 millennium plugins enable faceit_stats
 ```
