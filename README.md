@@ -1,34 +1,45 @@
-# FaceIt Stats for [Millennium](https://github.com/shdwmtr/millennium)  
-The Millennium plugin integrates a simple FaceIt widget into profile pages viewed in the Steam web browser. **Also works in overlay!**
+# **FaceIt Stats for [Millennium](https://steambrew.app)**
 
-> [!CAUTION]  
-> This plugin uses the WebKit feature to inject JavaScript code directly into your Steam web browser. **It is strongly recommended that you review the code yourself before installing this plugin.** Millennium has improved the plugin installation and moderation process, and I am currently waiting for moderator approval to download the plugin directly from the [Steambrew](https://steambrew.app/plugins) website. Avoid using untrusted builds from GitHub; however, prebuilt releases are available for easier installation.  
+### 🏆 Integrate a **[FaceIt](https://faceit.com)** widget with **CS2 stats** into Steam profile pages — works in overlay browser too!
 
 ![image](https://github.com/alowave/millennium-faceit-stats/blob/main/example.png?raw=true)
-## Installation  
-1. **Download the latest release** from the repository.  
-2. Copy the `faceit-stats` folder into your Steam plugins directory.  
-   - Default path: `C:\Program Files (x86)\Steam\plugins`  
-3. Activate a plugin in the steam (millenium) settings.
 
-## Building  
+## ⚡ About
+🔹Displays **basic Steam and FaceIt stats** (Matches, Elo, K/D ratio).
+
+🔹**CS2 start date** is determined using the "A New Beginning" achievement, which may cause delays on profiles with many achievements. This could be improved in future updates.
+
+💡 **Left-click the stats** to view H/S, ADR, and WinRate.
+
+## 📥 Installation
+> Avoid GitHub builds—they may be outdated and haven't been reviewed by Millennium developers.
+
+The **preferred** method is downloading directly from [Steambrew](https://steambrew.app/plugin?id=57c553750f61). 
+
+1.  **Download the latest release** from the plugin page.
+2.  Copy the `alowave.faceit_stats` folder into your Steam plugins directory:
+    -   **Default path:** `C:\Program Files (x86)\Steam\plugins`
+3.  Activate the plugin in **Millennium settings**.
+
+## 🛠️ Building
+Clone the repository:
 ```bash
-git clone --depth=1 https://github.com/alowave/millennium-faceit-stats 
+git clone https://github.com/alowave/millennium-faceit-stats
 cd millennium-faceit-stats
 pnpm install
 ```
-Run the following command to build the plugin:  
+To build the plugin:
 ```bash
-pnpm run dev
+pnpm run build
 ```
-
-After building, place the plugin template in your plugins directory:  
-`%MILLENNIUM_PATH%/plugins/millennium-faceit-stats`. Then, activate it from the "Plugins" tab in Steam, or use the command:  
+Then, move the plugin to your **plugins directory** and activate it in settings or via:
 ```bash
 millennium plugins enable faceit_stats
 ```
 
-## Note  
-**MILLENNIUM_PATH**:  
-- For Windows: Steam installation path, e.g., `C:\Program Files (x86)\Steam`  
-- For Unix: `~/.millennium`  
+## 📌 Notes
+⚠️ This plugin uses **WebKit** to inject JavaScript directly into your Steam web browser. **Please review the code before installing from untrusted sources.**
+
+### **MILLENNIUM_PATH:**
+-   **Windows:** `C:\Program Files (x86)\Steam`
+-   **Unix:** `~/.millennium`
