@@ -71,6 +71,8 @@ export default async function WebkitMain() {
             const faceItUser = await Millennium.callServerMethod("get_user_by_steamId", {steamId: steamID64})
             const faceItUserJSON = JSON.parse(faceItUser);
 
+            const leetifyAimRating = await Millennium.callServerMethod("get_aim_rating", {steamId: steamID64})
+
             const statsHTML = document.createElement("div");
             statsHTML.innerHTML = `
             <div class="account-row">
@@ -102,6 +104,11 @@ export default async function WebkitMain() {
                     <div class="account-steaminfo-row">
                         <ul style="margin: 0; padding: 0;">
                             <li class="tick">CS2 last 2 weeks hours: <a target="_blank" class="nolink" href="https://steamcommunity.com/profiles/${steamID64}/games/?tab=recent" rel="noopener"><span class="account-steaminfo-row-value">${csRecentHours}</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="account-steaminfo-row">
+                        <ul style="margin: 0; padding: 0;">
+                            <li class="tick">Leetify aim rating: <a target="_blank" class="nolink" href="https://leetify.com/app/profile/${steamID64}" rel="noopener"><span class="account-steaminfo-row-value">${leetifyAimRating != 0 ? `${leetifyAimRating}%` : 'N/A'}</span></a></li>
                         </ul>
                     </div>
                 </div>

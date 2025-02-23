@@ -10,6 +10,10 @@ HEADERS = {
     "Authorization": "Bearer 8f9985f3-3cf5-43de-970c-dfe244a57fb0"
 }
 
+HEADERS_LEETIFY= {
+    "Accept": "application/json",
+}
+
 # Logger setup
 LOGGER = PluginUtils.Logger("__faceit_stats__")
 
@@ -90,7 +94,7 @@ class FaceItUser:
             print(f"Failed to fetch FaceIt stats: {e}")
         
         return None
-
+    
     def __repr__(self):
         return (
             f"FaceItUser(id={self.id}, nickname={self.nickname}, country={self.country}, "
@@ -104,6 +108,20 @@ def get_user_by_steamId(steamId):
         user.stats = user.stats.__dict__ if user.stats else None
         return json.dumps(user.__dict__)
     return None
+
+def get_aim_rating(steamId):
+    """Fetches aim rating from Leetify API."""
+    url = f"https://api.leetify.com/api/profile/{steamId}"
+        
+    try:
+        response = requests.get(url, headers=HEADERS_LEETIFY)
+        response.raise_for_status()
+        data = response.json()
+        aim_rating = data.get("recentGameRatings", {}).get("aim", 0.0)
+        return round(aim_rating)
+    except requests.RequestException as e:
+        print(f"Failed to fetch aim rating: {e}")
+        return None
 
 def GetPluginDir():
     return os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..'))
