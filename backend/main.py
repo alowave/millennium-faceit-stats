@@ -20,9 +20,8 @@ LOGGER = PluginUtils.Logger("__faceit_stats__")
 DEBUG = False
 
 class FaceItUser:
-    def __init__(self, id: str, steam_id: str, nickname: str, country: str, avatar: str, cover_image_url: str, faceit_elo: int, skill_level: int):
+    def __init__(self, id: str, nickname: str, country: str, avatar: str, cover_image_url: str, faceit_elo: int, skill_level: int):
         self.id = id
-        self.steam_id = steam_id
         self.nickname = nickname
         self.country = country
         self.avatar = avatar
@@ -67,7 +66,6 @@ class FaceItUser:
         
         return FaceItUser(
             id=data.get("player_id", ""),
-            steam_id=steamId,
             nickname=data.get("nickname", "Unknown"),
             country=data.get("country", "Unknown"),
             avatar=data.get("avatar", ""),
@@ -98,21 +96,6 @@ class FaceItUser:
         
         return None
     
-    def get_aim_rating(self):
-        """Fetches aim rating from Leetify API."""
-        url = f"https://api.leetify.com/api/profile/{self.steam_id}"
-        
-        try:
-            response = requests.get(url, headers=HEADERS_LEETIFY)
-            response.raise_for_status()
-            data = response.json()
-            aim_rating = data.get("recentGameRatings", {}).get("aim", 0.0)
-            return round(aim_rating)
-        except requests.RequestException as e:
-            print(f"Failed to fetch aim rating: {e}")
-            return None
-
-
     def __repr__(self):
         return (
             f"FaceItUser(id={self.id}, nickname={self.nickname}, country={self.country}, "
@@ -126,6 +109,20 @@ def get_user_by_steamId(steamId):
         user.stats = user.stats.__dict__ if user.stats else None
         return json.dumps(user.__dict__)
     return None
+
+def get_aim_rating(steamId):
+    """Fetches aim rating from Leetify API."""
+    url = f"https://api.leetify.com/api/profile/{steamId}"
+        
+    try:
+        response = requests.get(url, headers=HEADERS_LEETIFY)
+        response.raise_for_status()
+        data = response.json()
+        aim_rating = data.get("recentGameRatings", {}).get("aim", 0.0)
+        return round(aim_rating)
+    except requests.RequestException as e:
+        print(f"Failed to fetch aim rating: {e}")
+        return None
 
 def GetPluginDir():
     return os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..'))
