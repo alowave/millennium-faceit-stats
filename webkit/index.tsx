@@ -108,7 +108,7 @@ export default async function WebkitMain() {
                     </div>
                     <div class="account-steaminfo-row">
                         <ul style="margin: 0; padding: 0;">
-                            <li class="tick">Leetify aim rating: <a target="_blank" class="nolink" href="https://leetify.com/app/profile/${steamID64}" rel="noopener"><span class="account-steaminfo-row-value">${leetifyAimRating != null ? `${leetifyAimRating}%` : 'N/A'}</span></a></li>
+                            <li class="tick">Leetify aim rating: <a target="_blank" class="nolink" href="https://leetify.com/app/profile/${steamID64}" rel="noopener"><span class="account-steaminfo-row-value">${leetifyAimRating != 0 ? `${leetifyAimRating}%` : 'N/A'}</span></a></li>
                         </ul>
                     </div>
                 </div>
