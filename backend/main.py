@@ -29,7 +29,6 @@ class FaceItUser:
         self.faceit_elo = faceit_elo
         self.skill_level = skill_level
         self.stats = self.get_user_stats()
-        self.aim_rating = self.get_aim_rating()
 
     class UserStats:
         def __init__(self, matches: int, avg_hs: float, avg_kd: float, adr: float, winrate: float):
