@@ -10,14 +10,19 @@ HEADERS = {
     "Authorization": "Bearer 8f9985f3-3cf5-43de-970c-dfe244a57fb0"
 }
 
+HEADERS_LEETIFY= {
+    "Accept": "application/json",
+}
+
 # Logger setup
 LOGGER = PluginUtils.Logger("__faceit_stats__")
 
 DEBUG = False
 
 class FaceItUser:
-    def __init__(self, id: str, nickname: str, country: str, avatar: str, cover_image_url: str, faceit_elo: int, skill_level: int):
+    def __init__(self, id: str, steam_id: str, nickname: str, country: str, avatar: str, cover_image_url: str, faceit_elo: int, skill_level: int):
         self.id = id
+        self.steam_id = steam_id
         self.nickname = nickname
         self.country = country
         self.avatar = avatar
@@ -25,6 +30,7 @@ class FaceItUser:
         self.faceit_elo = faceit_elo
         self.skill_level = skill_level
         self.stats = self.get_user_stats()
+        self.aim_rating = self.get_aim_rating()
 
     class UserStats:
         def __init__(self, matches: int, avg_hs: float, avg_kd: float, adr: float, winrate: float):
@@ -61,6 +67,7 @@ class FaceItUser:
         
         return FaceItUser(
             id=data.get("player_id", ""),
+            steam_id=steamId,
             nickname=data.get("nickname", "Unknown"),
             country=data.get("country", "Unknown"),
             avatar=data.get("avatar", ""),
@@ -90,6 +97,21 @@ class FaceItUser:
             print(f"Failed to fetch FaceIt stats: {e}")
         
         return None
+    
+    def get_aim_rating(self):
+        """Fetches aim rating from Leetify API."""
+        url = f"https://api.leetify.com/api/profile/{self.steam_id}"
+        
+        try:
+            response = requests.get(url, headers=HEADERS_LEETIFY)
+            response.raise_for_status()
+            data = response.json()
+            aim_rating = data.get("recentGameRatings", {}).get("aim", 0.0)
+            return round(aim_rating)
+        except requests.RequestException as e:
+            print(f"Failed to fetch aim rating: {e}")
+            return None
+
 
     def __repr__(self):
         return (

@@ -104,6 +104,11 @@ export default async function WebkitMain() {
                             <li class="tick">CS2 last 2 weeks hours: <a target="_blank" class="nolink" href="https://steamcommunity.com/profiles/${steamID64}/games/?tab=recent" rel="noopener"><span class="account-steaminfo-row-value">${csRecentHours}</span></a></li>
                         </ul>
                     </div>
+                    <div class="account-steaminfo-row">
+                        <ul style="margin: 0; padding: 0;">
+                            <li class="tick">Leetify aim rating: <a target="_blank" class="nolink" href="https://leetify.com/app/profile/${steamID64}" rel="noopener"><span class="account-steaminfo-row-value">${faceItUserJSON?.aim_rating ?? 'N/A'}</span></a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="account-faceitinfo-container">
                     <div class="account-faceit-cover" style="background-image: url(${faceItUserJSON?.cover_image_url ?? ''})"></div>
