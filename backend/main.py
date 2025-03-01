@@ -111,7 +111,7 @@ def get_user_by_steamId(steamId):
 
 def get_aim_rating(steamId):
     """Fetches aim rating from Leetify API."""
-    url = f"https://api.leetify.com/api/profile/{steamId}"
+    url = f"https://api.cs-prod.leetify.com/api/profile/id/{steamId}"
         
     try:
         response = requests.get(url, headers=HEADERS_LEETIFY)
