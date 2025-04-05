@@ -15,7 +15,7 @@ HEADERS_LEETIFY= {
 }
 
 # Logger setup
-LOGGER = PluginUtils.Logger("__faceit_stats__")
+LOGGER = PluginUtils.Logger()
 
 DEBUG = False
 
