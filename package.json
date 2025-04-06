@@ -12,7 +12,7 @@
   },
   "type": "module",
   "name": "faceit_stats",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "FaceIt Stats on steam profiles.",
   "main": "./webkit/index.ts",
   "author": "alowave",
