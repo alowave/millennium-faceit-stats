@@ -28,6 +28,18 @@ export default async function WebkitMain() {
 
     if (rightCol.length > 0) {
         console.log("Detected rightcol.");
+        
+        // Create and show loading spinner immediately
+        const loadingHTML = document.createElement("div");
+        loadingHTML.className = "account-row";
+        loadingHTML.innerHTML = `
+            <div class="faceit-loading-container">
+                <div class="faceit-spinner"></div>
+                <div class="faceit-loading-text">Loading Faceit data...</div>
+            </div>
+        `;
+        rightCol[0].insertBefore(loadingHTML, rightCol[0].children[1]);
+        
         try {
             const parser = new DOMParser();
 
@@ -152,6 +164,9 @@ export default async function WebkitMain() {
                 </div>
             </div>
             `;
+            
+            // Remove loading spinner and add content
+            rightCol[0].removeChild(loadingHTML);
             rightCol[0].insertBefore(statsHTML, rightCol[0].children[1]);
             const statsPager = statsHTML.querySelector('.stats_pager');
             if (statsPager) {
@@ -172,6 +187,25 @@ export default async function WebkitMain() {
         }
         catch (e) {
             console.log(e);
+            
+            // Remove loading spinner and show error message on failure
+            try {
+                rightCol[0].removeChild(loadingHTML);
+                
+                // Create an error message element
+                const errorHTML = document.createElement("div");
+                errorHTML.className = "account-row";
+                errorHTML.innerHTML = `
+                    <div class="account-container">
+                        <div class="account-faceit-message">
+                            <strong>Failed to load Faceit data.</strong>
+                        </div>
+                    </div>
+                `;
+                rightCol[0].insertBefore(errorHTML, rightCol[0].children[1]);
+            } catch (cleanupError) {
+                console.log("Error cleaning up loading spinner:", cleanupError);
+            }
         }
     } else {
         console.error("Parent container \".profile_rightcol\" not found");
