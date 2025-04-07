@@ -5,5 +5,5 @@
     "common_name": "FaceIt Stats",
     "description": "Displays player FaceIt statistics on steam profiles.",
 
-    "include": ["static"]
+    "include": ["static", "LICENSE"]
 }
