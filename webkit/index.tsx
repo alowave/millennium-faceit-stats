@@ -1,6 +1,5 @@
-/**
- * You have a limited version of the Millennium API available to you in the webkit context.
- */
+import { constSysfsExpr } from '@steambrew/webkit';
+
 type Millennium = {
     /**
      * Call a function in the backend (python) of your plugin
@@ -21,8 +20,40 @@ type Millennium = {
 
 declare const Millennium: Millennium;
 
+// Bundle CSS
+const faceitCss = constSysfsExpr('faceit_stats.css', { 
+    basePath: '../static', 
+    encoding: 'utf8' 
+}).content;
+// Bundle Arrow
+const faceitArrow = `data:image/png;base64,${constSysfsExpr('faceit_arrow.png', { 
+    basePath: '../static', 
+    encoding: 'base64' 
+}).content}`;
+
+// Bundle Skill Levels (0-10)
+const skillLevelMap: Record<number, string> = {
+    0:  `data:image/png;base64,${constSysfsExpr('skill_level_0_lg.png',  { basePath: '../static', encoding: 'base64' }).content}`,
+    1:  `data:image/png;base64,${constSysfsExpr('skill_level_1_lg.png',  { basePath: '../static', encoding: 'base64' }).content}`,
+    2:  `data:image/png;base64,${constSysfsExpr('skill_level_2_lg.png',  { basePath: '../static', encoding: 'base64' }).content}`,
+    3:  `data:image/png;base64,${constSysfsExpr('skill_level_3_lg.png',  { basePath: '../static', encoding: 'base64' }).content}`,
+    4:  `data:image/png;base64,${constSysfsExpr('skill_level_4_lg.png',  { basePath: '../static', encoding: 'base64' }).content}`,
+    5:  `data:image/png;base64,${constSysfsExpr('skill_level_5_lg.png',  { basePath: '../static', encoding: 'base64' }).content}`,
+    6:  `data:image/png;base64,${constSysfsExpr('skill_level_6_lg.png',  { basePath: '../static', encoding: 'base64' }).content}`,
+    7:  `data:image/png;base64,${constSysfsExpr('skill_level_7_lg.png',  { basePath: '../static', encoding: 'base64' }).content}`,
+    8:  `data:image/png;base64,${constSysfsExpr('skill_level_8_lg.png',  { basePath: '../static', encoding: 'base64' }).content}`,
+    9:  `data:image/png;base64,${constSysfsExpr('skill_level_9_lg.png',  { basePath: '../static', encoding: 'base64' }).content}`,
+    10: `data:image/png;base64,${constSysfsExpr('skill_level_10_lg.png', { basePath: '../static', encoding: 'base64' }).content}`,
+};
+
 export default async function WebkitMain() {
-    
+    if (!document.getElementById("faceit-custom-css")) {
+        const styleSheet = document.createElement("style");
+        styleSheet.id = "faceit-custom-css";
+        styleSheet.innerText = faceitCss;
+        document.head.appendChild(styleSheet);
+    }
+
     console.log("FaceIt Stats loaded.")
     const rightCol = await Millennium.findElement(document, '.profile_rightcol');
 
@@ -130,7 +161,7 @@ export default async function WebkitMain() {
                         faceItUserJSON
                             ? `
                             <a target="_blank" class="nolink" href="https://www.faceit.com/en/players/${faceItUserJSON?.nickname ?? ''}" rel="noopener">
-                                <img src="https://steamloopback.host/FaceItFinder/faceit_arrow.png" class="account-faceitinfo-container-arrow" alt="FaceIt profile arrow">
+                                <img src="${faceitArrow}" class="account-faceitinfo-container-arrow" alt="FaceIt profile arrow">
                             </a>
                             <div class="account-faceit-title">
                                 <a target="_blank" class="nolink" href="https://www.faceit.com/en/players/${faceItUserJSON?.nickname ?? ''}" rel="noopener">
@@ -140,7 +171,7 @@ export default async function WebkitMain() {
                             </div>
                             <div class="account-faceit-level">
                                 <a target="_blank" class="nolink" href="https://www.faceit.com/en/players/${faceItUserJSON?.nickname ?? ''}/stats/cs2" rel="noopener">
-                                    <img src="https://steamloopback.host/FaceItFinder/skill_level_${faceItUserJSON?.skill_level ?? 0}_lg.png" alt="FaceIt level ${faceItUserJSON?.skill_level ?? 0} icon" width="48" height="48">
+                                    <img src="${skillLevelMap[faceItUserJSON.skill_level] || skillLevelMap[0]}" alt="FaceIt level icon" width="48" height="48">
                                 </a>
                             </div>
                             <div class="stats_pager">
