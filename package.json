@@ -4,24 +4,25 @@
     "build": "millennium-ttc --build prod"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.26.7",
-    "@babel/preset-react": "^7.26.3",
-    "@types/react": "16.14.0",
-    "@types/react-dom": "^18.3.5",
+    "@babel/preset-env": "^7.29.0",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/traverse": "^7.29.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "@types/webpack": "^5.28.5"
   },
   "type": "module",
   "name": "faceit_stats",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "FaceIt Stats on steam profiles.",
   "main": "./webkit/index.ts",
   "author": "alowave",
   "license": "MIT",
   "dependencies": {
-    "@steambrew/api": "^4.2.2",
-    "@steambrew/client": "^4.2.1",
-    "@steambrew/ttc": "^1.2.2",
-    "@steambrew/webkit": "^4.2.1",
-    "preact": "^10.25.4"
+    "@steambrew/api": "^5.8.4",
+    "@steambrew/client": "^5.8.4",
+    "@steambrew/ttc": "^3.2.6",
+    "@steambrew/webkit": "^5.8.4",
+    "preact": "^10.28.4"
   }
 }
